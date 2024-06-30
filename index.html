@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Grid with Random Images and 16x16 Cells</title>
+    <link rel="stylesheet" href="./css-resources/fireworks.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100vh; /* Ensure the body takes up the full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        .section {
+            display: flex;
+        }
+        .first-section {
+            background-color: #0D1F2D;
+            flex: 1; /* First section takes 2/3 of the height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .second-section {
+            background-color: #e0e0e0;
+            flex: 1; /* Second section takes 1/3 of the height */
+            max-height: calc(100vh - 20px); /* Ensure second section does not exceed 100vh minus padding */
+            overflow: hidden; /* Add scrollbars if content overflows */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(16px, 1fr)); /* Flexible columns */
+            grid-auto-rows: 16px; /* Each row is 16 pixels high */
+        }
+        .cell {
+            background-color: #003300; /* Grass-like background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Ensure images are positioned correctly */
+        }
+        .cell img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block; /* Ensure images do not affect cell sizing */
+            position: absolute; /* Position images within cells */
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto; /* Center align images */
+        }
+    </style>
+</head>
+<body>
+    <div class="section first-section">
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <H1 style="color:white">Happy Birthday My Little One ❤️</H1>
+    </div>
+    <div class="section second-section" id="grid">
+        <!-- Grid layout with dynamic number of cells for the second section -->
+        <!-- JavaScript can be used to populate cells if needed -->
+    </div>
+
+    <script>
+        // Example JavaScript to populate the grid with dynamic number of cells
+        const grid = document.getElementById('grid');
+        const totalWidth = grid.offsetWidth; // Get the width of the grid container
+        const cellSize = 16; // Size of each cell in pixels
+        const gap = 2; // Gap between cells in pixels
+
+        // Calculate number of columns based on available width
+        const numColumns = Math.floor((totalWidth - gap) / (cellSize + gap));
+
+        // Generate cells dynamically
+        const numRows = Math.ceil(numColumns / 3); // Calculate rows based on columns for distribution
+        const totalCells = numColumns * numRows;
+        const cellsWithImagesCount = Math.floor(totalCells * 0.2); // 20% of cells with images
+
+        // Create an array of indices to randomly select cells for images
+        const cellIndices = Array.from({ length: totalCells }, (_, index) => index);
+        shuffleArray(cellIndices); // Shuffle indices for random distribution
+
+        // Track how many image cells have been placed
+        let imageCellsPlaced = 0;
+        const greenColors = [
+        '#1E2A12',
+        '#354D27',
+        // Add more dark shades of green as needed
+    ];
+        for (let i = 0; i < totalCells; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            const randomColor = greenColors[Math.floor(Math.random() * greenColors.length)];
+            cell.style.backgroundColor = randomColor;
+            if (imageCellsPlaced < cellsWithImagesCount && Math.random() < 0.2) {
+                const img = document.createElement('img');
+                img.src = `./image-resources/pixilart-drawing.png`; // Example image placeholder
+                img.alt = `Image ${i + 1}`;
+                cell.appendChild(img);
+                imageCellsPlaced++;
+            }
+            
+            grid.appendChild(cell);
+        }
+
+        // Function to shuffle array elements
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+
+</body>
+</html>
