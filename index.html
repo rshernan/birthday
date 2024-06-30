@@ -17,6 +17,7 @@
         }
         .section {
             display: flex;
+            flex-direction: column;
         }
         .first-section {
             background-color: #0D1F2D;
@@ -59,7 +60,8 @@
         <div class="firework"></div>
         <div class="firework"></div>
         <div class="firework"></div>
-        <H1 style="color:white">Happy Birthday My Little One ❤️</H1>
+        <H1 style="color:white; width: 100vw; text-align: center;">Happy Birthday My Little One ❤️</H1>
+        <H1 id="timer" style="color: white; display: flex; gap:10px;"></H1>
     </div>
     <div class="section second-section" id="grid">
         <!-- Grid layout with dynamic number of cells for the second section -->
@@ -115,6 +117,29 @@
                 [array[i], array[j]] = [array[j], array[i]];
             }
         }
+        function updateTimer() {
+        future  = Date.parse("July 22, 2027 11:30:00");
+        now     = new Date();
+        diff    = future - now;
+
+        days  = Math.floor( diff / (1000*60*60*24) );
+        hours = Math.floor( diff / (1000*60*60) );
+        mins  = Math.floor( diff / (1000*60) );
+        secs  = Math.floor( diff / 1000 );
+
+        d = days;
+        h = hours - days  * 24;
+        m = mins  - hours * 60;
+        s = secs  - mins  * 60;
+
+        document.getElementById("timer")
+            .innerHTML =
+            '<div>' + d + '<span>days</span></div>' +
+            '<div>' + h + '<span>hours</span></div>' +
+            '<div>' + m + '<span>minutes</span></div>' +
+            '<div>' + s + '<span>seconds</span></div>' ;
+        }
+        setInterval('updateTimer()', 1000 );
     </script>
 
 </body>
